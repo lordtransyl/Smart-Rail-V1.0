@@ -133,7 +133,7 @@ background:#000814;
 color:white;
 }
 
-/* MAIN */
+
 
 .home-container{
 width:100%;
@@ -141,7 +141,7 @@ min-height:100vh;
 position:relative;
 }
 
-/* BACKGROUND ANIMATION */
+
 
 .cursor-bg{
 position:fixed;
@@ -152,7 +152,7 @@ height:100%;
 z-index:0;
 }
 
-/* CONTENT ABOVE ANIMATION */
+
 
 .content-layer{
 position:relative;
@@ -164,21 +164,21 @@ justify-content:center;
 padding-top:120px;
 }
 
-/* TITLE */
+
 
 .title{
 font-size:55px;
 color:#4cc9f0;
 }
 
-/* SUBTITLE */
+
 
 .subtitle{
 margin-top:10px;
 color:#90dbf4;
 }
 
-/* SEARCH */
+
 
 .search-box{
 margin-top:40px;
@@ -204,7 +204,7 @@ border-radius:6px;
 cursor:pointer;
 }
 
-/* RESULTS */
+
 
 .results{
 margin-top:40px;
@@ -217,9 +217,8 @@ padding:20px;
 margin-bottom:20px;
 border-radius:8px;
 }
-/* NAVBAR */
 
-/* NAVBAR STAYS THE SAME */
+
 .navbar {
   position: fixed;
   top: 20px;
@@ -245,24 +244,22 @@ border-radius:8px;
 
   z-index: 10;
 
-  /* NEW: Fade + slide-down animation */
+
   animation: fadeSlideDown 0.8s ease forwards;
 }
 
-/* Logo */
+
 .logo {
   font-size: 22px;
   font-weight: bold;
   color: #4cc9f0;
 }
 
-/* Links */
 .nav-links {
   display: flex;
   gap: 30px;
 }
 
-/* Link style */
 .nav-links a {
   text-decoration: none;
   color: white;
@@ -271,7 +268,6 @@ border-radius:8px;
   transition: color 0.3s ease;
 }
 
-/* Animated underline */
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -287,12 +283,10 @@ border-radius:8px;
   width: 100%;
 }
 
-/* Link hover color */
 .nav-links a:hover {
   color: #4cc9f0;
 }
 
-/* ANIMATION KEYFRAMES */
 @keyframes fadeSlideDown {
   0% {
     opacity: 0;
@@ -366,7 +360,7 @@ background:#0077b6;
   color:white;
   cursor:pointer;
 }
-/* LOGIN PAGE */
+
 
 .login-container{
 
@@ -457,7 +451,7 @@ text-decoration:underline;
   justify-content: center;
   align-items: center;
 
-  padding-top: 100px; /* pushes content below navbar */
+  padding-top: 100px; 
 }
 
 .passenger-box{
@@ -585,7 +579,6 @@ cursor:pointer;
 .logout-btn:hover{
 background:#2563eb;
 }
-/* Passenger form select fix */
 
 .passenger-page select{
 background:#0f172a;
@@ -597,13 +590,13 @@ width:100%;
 font-size:15px;
 }
 
-/* dropdown options */
+
 
 .passenger-page select option{
 background:#0f172a;
 color:white;
 }
-/* Passenger page inputs */
+
 
 .passenger-page input,
 .passenger-page select{
@@ -617,13 +610,13 @@ color:white;
     font-size:15px;
 }
 
-/* Dropdown arrow + text */
+
 
 .passenger-page select{
     appearance:none;
 }
 
-/* Dropdown options */
+
 
 .passenger-page select option{
     background:#0f172a !important;
@@ -641,7 +634,6 @@ border-radius:8px;
 width:100%;
 }
 
-/* force option colors */
 
 .gender-select option{
 background:#1e293b;
