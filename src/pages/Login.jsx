@@ -6,10 +6,11 @@ export default function Login(){
 
 const [username,setUsername] = useState("")
 const [password,setPassword] = useState("")
+const [phone,setPhone] = useState("")
+const [aadhaar,setAadhaar] = useState("")
 const [registerMode,setRegisterMode] = useState(false)
 
 const { login } = useContext(AuthContext)
-
 const navigate = useNavigate()
 
 const handleLogin = () => {
@@ -26,12 +27,26 @@ return
 }
 
 login(username)
-
 navigate(-1)
 
 }
 
 const handleRegister = () => {
+
+if(!username || !password || !phone || !aadhaar){
+alert("Please fill all fields")
+return
+}
+
+if(phone.length !== 10){
+alert("Phone number must be 10 digits")
+return
+}
+
+if(aadhaar.length !== 12){
+alert("Aadhaar must be 12 digits")
+return
+}
 
 const users = JSON.parse(localStorage.getItem("users")) || []
 
@@ -44,15 +59,21 @@ return
 
 users.push({
 username,
-password
+password,
+phone,
+aadhaar
 })
 
 localStorage.setItem("users", JSON.stringify(users))
 
-alert("Account created. Please login.")
+alert("Account created successfully. Please login.")
 
 setRegisterMode(false)
 
+setUsername("")
+setPassword("")
+setPhone("")
+setAadhaar("")
 }
 
 return(
@@ -78,6 +99,32 @@ placeholder="Password"
 value={password}
 onChange={(e)=>setPassword(e.target.value)}
 />
+
+{registerMode && (
+
+<>
+<input
+type="text"
+placeholder="Phone Number"
+maxLength="10"
+inputMode="numeric"
+pattern="[0-9]*"
+value={phone}
+onChange={(e)=>setPhone(e.target.value)}
+/>
+
+<input
+type="text"
+placeholder="Aadhaar / ID Number"
+maxLength="12"
+inputMode="numeric"
+pattern="[0-9]*"
+value={aadhaar}
+onChange={(e)=>setAadhaar(e.target.value)}
+/>
+</>
+
+)}
 
 {registerMode ? (
 

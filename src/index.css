@@ -638,4 +638,29 @@ width:100%;
 .gender-select option{
 background:#1e293b;
 color:white;
+} 
+.date-field{
+position:relative;
+width:100%;
+}
+
+.date-field input{
+width:100%;
+padding-right:40px;
+}
+
+.calendar-icon{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+font-size:18px;
+cursor:pointer;
+} 
+input[type="date"]::-webkit-calendar-picker-indicator{
+opacity:0;
+position:absolute;
+right:0;
+width:100%;
+cursor:pointer;
 }

@@ -3,120 +3,212 @@ import { useState, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
 
 export default function Seats() {
-  const navigate = useNavigate()
-  const { user } = useContext(AuthContext)
-  const passengerData = JSON.parse(localStorage.getItem("passenger"))
-  const count = passengerData?.count || 1
 
-  const seats = Array.from({ length: 40 }, (_, i) => i + 1)
-  const bookedSeats = [3, 7, 12, 18, 25, 30, 36]
+const navigate = useNavigate()
+const { user } = useContext(AuthContext)
 
-  const [selectedSeats, setSelectedSeats] = useState([])
+const passengerData = JSON.parse(localStorage.getItem("passenger"))
+const count = passengerData?.count || 1
 
-  const handleSeatClick = (seat) => {
-    if (bookedSeats.includes(seat)) return
+const totalSeats = 40
+const bookedSeats = [3,7,12,18,25,30,36]
 
-    if (selectedSeats.includes(seat)) {
-      // Deselect seat
-      setSelectedSeats(selectedSeats.filter((s) => s !== seat))
-    } else {
-      if (selectedSeats.length < count) {
-        setSelectedSeats([...selectedSeats, seat])
-      }
-    }
-  }
+const [selectedSeats,setSelectedSeats] = useState([])
 
-  const handleContinue = () => {
-    if (selectedSeats.length !== count) {
-      alert(`Please select ${count} seats`)
-      return
-    }
+const handleSeatClick = (seat)=>{
 
-    localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats))
+if(bookedSeats.includes(seat)) return
 
-    // Save booking for logged-in user
-    if (user) {
-      const allBookings =
-        JSON.parse(localStorage.getItem("bookings_" + user.email)) || []
+if(selectedSeats.includes(seat)){
 
-      const newBooking = {
-        passenger: passengerData,
-        seats: selectedSeats,
-        timestamp: new Date().toLocaleString(),
-      }
+setSelectedSeats(selectedSeats.filter(s=>s!==seat))
 
-      allBookings.push(newBooking)
-      localStorage.setItem(
-        "bookings_" + user.email,
-        JSON.stringify(allBookings)
-      )
-    }
+}else{
 
-    navigate("/ticket")
-  }
+if(selectedSeats.length < count){
+setSelectedSeats([...selectedSeats,seat])
+}
 
-  return (
-    <div style={{ padding: "120px", color: "white", textAlign: "center" }}>
-      <h2>Select Your Seats</h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 60px)",
-          gap: "10px",
-          justifyContent: "center",
-          marginTop: "20px",
-        }}
-      >
-        {seats.map((seat) => {
-          const isBooked = bookedSeats.includes(seat)
-          const isSelected = selectedSeats.includes(seat)
-          return (
-            <button
-              key={seat}
-              onClick={() => handleSeatClick(seat)}
-              disabled={isBooked}
-              style={{
-                backgroundColor: isBooked
-                  ? "red"
-                  : isSelected
-                  ? "green"
-                  : "gray",
-                color: "white",
-                height: "50px",
-                width: "50px",
-                borderRadius: "5px",
-                cursor: isBooked ? "not-allowed" : "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              {seat}
-            </button>
-          )
-        })}
-      </div>
+}
 
-      <div style={{ marginTop: "20px", fontSize: "16px" }}>
-        Selected Seats: {selectedSeats.join(", ") || "None"}
-      </div>
+}
 
-      <button
-        onClick={handleContinue}
-        style={{
-          marginTop: "30px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-        }}
-      >
-        Continue to Ticket
-      </button>
+const handleContinue = ()=>{
 
-      <div style={{ marginTop: "20px", fontSize: "18px" }}>
-        <span>Legend: </span>
-        <span style={{ color: "green", marginLeft: "10px" }}>Selected</span>
-        <span style={{ color: "red", marginLeft: "10px" }}>Booked</span>
-        <span style={{ color: "gray", marginLeft: "10px" }}>Available</span>
-      </div>
-    </div>
-  )
+if(selectedSeats.length !== count){
+alert(`Please select ${count} seats`)
+return
+}
+
+localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats))
+
+if(user){
+
+const allBookings =
+JSON.parse(localStorage.getItem("bookings_"+user.email)) || []
+
+const newBooking = {
+
+passenger: passengerData,
+seats: selectedSeats,
+journeyDate: passengerData.date,
+timestamp: new Date().toLocaleString()
+
+}
+
+allBookings.push(newBooking)
+
+localStorage.setItem(
+"bookings_"+user.email,
+JSON.stringify(allBookings)
+)
+
+}
+
+navigate("/ticket")
+
+}
+
+const renderSeat = (seat,label)=>{
+
+const isBooked = bookedSeats.includes(seat)
+const isSelected = selectedSeats.includes(seat)
+
+return(
+
+<div style={{textAlign:"center"}}>
+
+<button
+onClick={()=>handleSeatClick(seat)}
+disabled={isBooked}
+style={{
+backgroundColor:isBooked
+? "#ff4d4d"
+: isSelected
+? "#2ecc71"
+: "#6c757d",
+
+color:"white",
+height:"60px",
+width:"70px",
+borderRadius:"10px",
+cursor:isBooked?"not-allowed":"pointer",
+fontWeight:"bold",
+fontSize:"16px"
+}}
+>
+
+{seat}
+
+</button>
+
+<div style={{fontSize:"10px",marginTop:"4px"}}>
+{label}
+</div>
+
+</div>
+
+)
+
+}
+
+const bays = []
+
+for(let i=1;i<=totalSeats;i+=8){
+
+bays.push([
+[i,i+1,i+2],      // lower middle upper
+[i+3,i+4,i+5],    // lower middle upper
+i+6,              // side lower
+i+7               // side upper
+])
+
+}
+
+return(
+
+<div style={{padding:"120px",color:"white",textAlign:"center"}}>
+
+<h2>Select Your Seats</h2>
+
+<div style={{
+display:"flex",
+flexDirection:"column",
+gap:"40px",
+alignItems:"center",
+marginTop:"30px"
+}}>
+
+{bays.map((bay,index)=>{
+
+const [row1,row2,sideLower,sideUpper] = bay
+
+return(
+
+<div key={index} style={{display:"flex",gap:"80px"}}>
+
+<div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+
+<div style={{display:"flex",gap:"10px"}}>
+{renderSeat(row1[0],"LOWER")}
+{renderSeat(row1[1],"MIDDLE")}
+{renderSeat(row1[2],"UPPER")}
+</div>
+
+<div style={{display:"flex",gap:"10px"}}>
+{renderSeat(row2[0],"LOWER")}
+{renderSeat(row2[1],"MIDDLE")}
+{renderSeat(row2[2],"UPPER")}
+</div>
+
+</div>
+
+<div style={{display:"flex",flexDirection:"column",gap:"10px"}}>
+
+{renderSeat(sideLower,"SIDE LOWER")}
+{renderSeat(sideUpper,"SIDE UPPER")}
+
+</div>
+
+</div>
+
+)
+
+})}
+
+</div>
+
+<div style={{marginTop:"30px"}}>
+
+Selected Seats: {selectedSeats.join(", ") || "None"}
+
+</div>
+
+<button
+onClick={handleContinue}
+style={{
+marginTop:"30px",
+padding:"12px 30px",
+fontSize:"16px",
+cursor:"pointer",
+borderRadius:"6px"
+}}
+>
+
+Continue to Ticket
+
+</button>
+
+<div style={{marginTop:"20px"}}>
+
+<span style={{color:"#2ecc71"}}>Selected</span>
+<span style={{color:"#ff4d4d",marginLeft:"20px"}}>Booked</span>
+<span style={{color:"#6c757d",marginLeft:"20px"}}>Available</span>
+
+</div>
+
+</div>
+
+)
+
 }
